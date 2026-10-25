@@ -1,6 +1,6 @@
 escenario,errores_validacion,avisos_validacion,detalle_validacion,variables_en_alerta,variables_a_revisar,variable_mas_afectada,psi_max,sliced_wasserstein,psi_prediccion,cambio_tau_medio
-sin cambios,0,0,-,0,0,gasto_30d,0.0010,0.0119,0.0007,0.0007
-inflación 30%,0,0,-,0,2,ticket_medio,0.1479,0.1235,0.0034,0.0033
-clientes inactivos,0,1,dias_desde_ultima: 100.0% de valores fuera del rango de entrenamiento,3,0,dias_desde_ultima,8.2829,0.9776,0.1417,-0.0099
-más clientes nuevos,0,0,-,0,6,n_transacciones,0.2097,0.1450,0.0035,0.0011
-falla de datos,1,0,edad: faltantes 40.7% (en entrenamiento 0.8%),1,0,edad,1.7892,0.0200,0.0471,-0.0117
+sin cambios,0,0,-,0,0,ticket_mediano,0.0002,0.0043,0.0001,-0.0000
+inflación 30%,0,0,-,0,2,ticket_medio,0.1583,0.1287,0.0022,-0.0019
+clientes inactivos,0,1,dias_desde_ultima: 100.0% de valores fuera del rango de entrenamiento,3,0,dias_desde_ultima,8.2831,0.9745,0.2311,-0.0091
+más clientes nuevos,0,0,-,0,6,n_transacciones,0.2104,0.1435,0.0044,0.0029
+falla de datos,1,0,edad: faltantes 40.3% (en entrenamiento 0.8%),1,0,edad,1.7469,0.0138,0.0072,-0.0034

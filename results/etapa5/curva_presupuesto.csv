@@ -1,81 +1,81 @@
 serie,fraccion,valor,ic_inf,ic_sup
-Mochila (uplift / costo),0.050,-1289.524,-1902.234,-805.303
-Mayor uplift (sin mirar el costo),0.050,-694.496,-1226.239,-227.570
-Mayor probabilidad de compra,0.050,-1561.326,-1733.650,-1338.069
-Al azar,0.050,-1299.634,-1747.650,-884.620
-Mochila (uplift / costo),0.100,-2369.595,-3182.215,-1590.124
-Mayor uplift (sin mirar el costo),0.100,-2112.045,-2967.205,-1375.562
-Mayor probabilidad de compra,0.100,-2962.975,-3312.917,-2650.561
-Al azar,0.100,-2389.633,-3141.021,-1793.921
-Mochila (uplift / costo),0.150,-3386.044,-4400.501,-2432.140
-Mayor uplift (sin mirar el costo),0.150,-3643.300,-4781.558,-2770.112
-Mayor probabilidad de compra,0.150,-4364.783,-4765.102,-4048.537
-Al azar,0.150,-3712.499,-4506.384,-2944.506
-Mochila (uplift / costo),0.200,-4264.394,-5619.103,-3136.203
-Mayor uplift (sin mirar el costo),0.200,-4737.143,-5896.010,-3780.539
-Mayor probabilidad de compra,0.200,-5482.693,-5936.379,-5029.382
-Al azar,0.200,-4889.962,-5901.572,-3991.765
-Mochila (uplift / costo),0.250,-5768.213,-7274.189,-4478.460
-Mayor uplift (sin mirar el costo),0.250,-5489.434,-6794.492,-4283.369
-Mayor probabilidad de compra,0.250,-6959.591,-7514.786,-6358.173
-Al azar,0.250,-6384.679,-7288.292,-5359.004
-Mochila (uplift / costo),0.300,-6714.767,-8021.273,-5216.195
-Mayor uplift (sin mirar el costo),0.300,-6451.612,-7525.132,-5302.159
-Mayor probabilidad de compra,0.300,-8445.393,-9178.564,-7839.378
-Al azar,0.300,-7249.877,-8291.384,-6138.170
-Mochila (uplift / costo),0.350,-7753.629,-9253.914,-6492.743
-Mayor uplift (sin mirar el costo),0.350,-8005.272,-9487.618,-6791.018
-Mayor probabilidad de compra,0.350,-9642.658,-10472.200,-8795.624
-Al azar,0.350,-8820.939,-10036.097,-7622.665
-Mochila (uplift / costo),0.400,-9009.318,-10426.722,-7552.893
-Mayor uplift (sin mirar el costo),0.400,-9427.945,-10936.496,-7911.570
-Mayor probabilidad de compra,0.400,-10875.263,-11691.142,-9885.678
-Al azar,0.400,-10356.107,-11628.607,-8956.118
-Mochila (uplift / costo),0.450,-10682.828,-12459.881,-9361.077
-Mayor uplift (sin mirar el costo),0.450,-10938.596,-12412.843,-9512.965
-Mayor probabilidad de compra,0.450,-12682.755,-13659.724,-11685.821
-Al azar,0.450,-11112.429,-12421.539,-9761.649
-Mochila (uplift / costo),0.500,-11967.333,-13563.285,-10131.480
-Mayor uplift (sin mirar el costo),0.500,-12319.542,-13673.121,-10569.592
-Mayor probabilidad de compra,0.500,-13949.640,-14911.052,-12953.443
-Al azar,0.500,-12243.744,-13656.476,-11124.787
-Mochila (uplift / costo),0.550,-13310.941,-14857.336,-11632.600
-Mayor uplift (sin mirar el costo),0.550,-13895.676,-15513.723,-12292.791
-Mayor probabilidad de compra,0.550,-15444.059,-16718.745,-14318.965
-Al azar,0.550,-13048.054,-14243.723,-11586.048
-Mochila (uplift / costo),0.600,-14588.984,-16283.896,-13257.056
-Mayor uplift (sin mirar el costo),0.600,-14900.234,-16686.556,-13636.736
-Mayor probabilidad de compra,0.600,-16379.403,-17779.359,-15310.445
-Al azar,0.600,-14065.260,-15893.547,-12595.870
-Mochila (uplift / costo),0.650,-15782.342,-17292.682,-13839.602
-Mayor uplift (sin mirar el costo),0.650,-16267.393,-17771.786,-14425.178
-Mayor probabilidad de compra,0.650,-17670.371,-18961.919,-16301.690
-Al azar,0.650,-15374.141,-17164.050,-13581.380
-Mochila (uplift / costo),0.700,-17139.203,-18785.608,-15093.114
-Mayor uplift (sin mirar el costo),0.700,-17546.523,-19234.778,-15585.807
-Mayor probabilidad de compra,0.700,-18808.829,-20001.218,-17265.323
-Al azar,0.700,-16523.368,-18117.267,-14689.228
-Mochila (uplift / costo),0.750,-18445.296,-19911.278,-16969.453
-Mayor uplift (sin mirar el costo),0.750,-18674.830,-20145.093,-17180.249
-Mayor probabilidad de compra,0.750,-20179.452,-21546.627,-18861.133
-Al azar,0.750,-18323.177,-19752.845,-16759.052
-Mochila (uplift / costo),0.800,-19929.090,-21651.546,-17921.306
-Mayor uplift (sin mirar el costo),0.800,-19886.197,-21564.464,-17981.517
-Mayor probabilidad de compra,0.800,-20831.714,-22070.460,-19355.790
-Al azar,0.800,-19603.817,-21376.069,-18019.490
-Mochila (uplift / costo),0.850,-21231.788,-22992.006,-19475.760
-Mayor uplift (sin mirar el costo),0.850,-21242.440,-22996.181,-19500.383
-Mayor probabilidad de compra,0.850,-21905.272,-23847.169,-20256.338
-Al azar,0.850,-21260.561,-23186.096,-19492.886
-Mochila (uplift / costo),0.900,-21231.788,-22873.464,-19547.589
-Mayor uplift (sin mirar el costo),0.900,-22426.701,-24142.202,-20519.678
-Mayor probabilidad de compra,0.900,-22780.204,-24603.027,-21254.293
-Al azar,0.900,-22708.673,-24474.525,-20934.672
-Mochila (uplift / costo),0.950,-21231.788,-22968.500,-19517.851
-Mayor uplift (sin mirar el costo),0.950,-23469.876,-25262.616,-21723.795
-Mayor probabilidad de compra,0.950,-24540.497,-26116.155,-22466.940
-Al azar,0.950,-23976.206,-25717.709,-22093.911
-Mochila (uplift / costo),1.000,-21231.788,-23236.389,-19493.777
-Mayor uplift (sin mirar el costo),1.000,-25322.752,-27249.379,-23198.515
-Mayor probabilidad de compra,1.000,-25321.982,-27248.608,-23198.496
-Al azar,1.000,-25322.848,-27249.661,-23198.515
+Mochila (uplift / costo),0.050,-742.326,-1010.424,-438.300
+Mayor uplift (sin mirar el costo),0.050,-882.474,-1122.375,-677.855
+Mayor probabilidad de compra,0.050,-1521.705,-1600.185,-1432.190
+Al azar,0.050,-1411.751,-1646.197,-1218.355
+Mochila (uplift / costo),0.100,-1858.758,-2243.526,-1536.144
+Mayor uplift (sin mirar el costo),0.100,-2155.265,-2473.352,-1824.945
+Mayor probabilidad de compra,0.100,-3025.012,-3157.949,-2897.696
+Al azar,0.100,-2700.636,-2969.592,-2380.983
+Mochila (uplift / costo),0.150,-3250.123,-3609.733,-2809.718
+Mayor uplift (sin mirar el costo),0.150,-3515.871,-3903.331,-3166.155
+Mayor probabilidad de compra,0.150,-4568.568,-4747.922,-4428.103
+Al azar,0.150,-4133.091,-4473.042,-3806.441
+Mochila (uplift / costo),0.200,-4685.609,-5226.912,-4248.898
+Mayor uplift (sin mirar el costo),0.200,-4877.004,-5397.914,-4458.579
+Mayor probabilidad de compra,0.200,-6114.297,-6355.443,-5944.648
+Al azar,0.200,-5704.529,-6071.298,-5234.841
+Mochila (uplift / costo),0.250,-5933.305,-6508.170,-5414.017
+Mayor uplift (sin mirar el costo),0.250,-6123.873,-6653.690,-5723.663
+Mayor probabilidad de compra,0.250,-7580.762,-7872.341,-7279.488
+Al azar,0.250,-7205.394,-7667.081,-6756.478
+Mochila (uplift / costo),0.300,-7422.175,-8032.223,-6888.734
+Mayor uplift (sin mirar el costo),0.300,-7440.163,-7974.588,-6966.585
+Mayor probabilidad de compra,0.300,-9069.338,-9401.448,-8805.833
+Al azar,0.300,-8453.784,-9055.391,-7938.132
+Mochila (uplift / costo),0.350,-8986.677,-9538.250,-8345.733
+Mayor uplift (sin mirar el costo),0.350,-8897.032,-9370.057,-8256.142
+Mayor probabilidad de compra,0.350,-10729.270,-11039.564,-10381.378
+Al azar,0.350,-9804.205,-10408.023,-9334.357
+Mochila (uplift / costo),0.400,-10592.694,-11300.923,-9973.751
+Mayor uplift (sin mirar el costo),0.400,-10496.664,-11112.619,-9916.307
+Mayor probabilidad de compra,0.400,-12140.858,-12519.979,-11744.968
+Al azar,0.400,-11147.821,-11751.289,-10544.741
+Mochila (uplift / costo),0.450,-11950.991,-12571.153,-11192.049
+Mayor uplift (sin mirar el costo),0.450,-11933.612,-12496.784,-11249.601
+Mayor probabilidad de compra,0.450,-13461.438,-13870.178,-13092.118
+Al azar,0.450,-12578.757,-13177.478,-12051.047
+Mochila (uplift / costo),0.500,-13407.559,-14046.921,-12707.429
+Mayor uplift (sin mirar el costo),0.500,-13424.352,-14050.448,-12608.595
+Mayor probabilidad de compra,0.500,-14772.750,-15224.028,-14323.406
+Al azar,0.500,-14056.427,-14624.538,-13432.107
+Mochila (uplift / costo),0.550,-14975.386,-15911.502,-14260.087
+Mayor uplift (sin mirar el costo),0.550,-14885.389,-15758.640,-14190.878
+Mayor probabilidad de compra,0.550,-16274.880,-16720.174,-15821.005
+Al azar,0.550,-15334.017,-16050.409,-14709.240
+Mochila (uplift / costo),0.600,-16354.826,-17213.967,-15543.466
+Mayor uplift (sin mirar el costo),0.600,-16400.059,-17339.835,-15598.825
+Mayor probabilidad de compra,0.600,-17833.195,-18430.657,-17256.013
+Al azar,0.600,-16546.918,-17274.144,-15854.912
+Mochila (uplift / costo),0.650,-17762.738,-18587.794,-16940.264
+Mayor uplift (sin mirar el costo),0.650,-18039.798,-19015.395,-17240.699
+Mayor probabilidad de compra,0.650,-19173.276,-19765.369,-18576.339
+Al azar,0.650,-17798.887,-18507.648,-16958.098
+Mochila (uplift / costo),0.700,-19309.541,-20109.017,-18585.009
+Mayor uplift (sin mirar el costo),0.700,-19681.182,-20424.496,-18950.747
+Mayor probabilidad de compra,0.700,-20807.885,-21358.467,-20216.200
+Al azar,0.700,-19418.083,-20190.594,-18528.363
+Mochila (uplift / costo),0.750,-20769.791,-21632.067,-20197.512
+Mayor uplift (sin mirar el costo),0.750,-21075.618,-21915.980,-20453.145
+Mayor probabilidad de compra,0.750,-22246.648,-22940.268,-21623.533
+Al azar,0.750,-20816.625,-21549.783,-20130.314
+Mochila (uplift / costo),0.800,-22155.002,-22931.986,-21354.166
+Mayor uplift (sin mirar el costo),0.800,-22436.888,-23176.924,-21630.535
+Mayor probabilidad de compra,0.800,-23544.698,-24413.407,-22828.176
+Al azar,0.800,-22177.384,-23047.593,-21386.914
+Mochila (uplift / costo),0.850,-23641.567,-24437.290,-22789.882
+Mayor uplift (sin mirar el costo),0.850,-23846.189,-24696.222,-23108.172
+Mayor probabilidad de compra,0.850,-24744.673,-25406.725,-24050.498
+Al azar,0.850,-23661.324,-24521.632,-22826.135
+Mochila (uplift / costo),0.900,-25150.886,-25903.186,-24306.695
+Mayor uplift (sin mirar el costo),0.900,-25134.954,-25835.544,-24275.881
+Mayor probabilidad de compra,0.900,-25857.842,-26553.614,-25185.235
+Al azar,0.900,-25132.018,-25881.990,-24378.980
+Mochila (uplift / costo),0.950,-26621.200,-27356.941,-25880.912
+Mayor uplift (sin mirar el costo),0.950,-26627.441,-27375.170,-25893.977
+Mayor probabilidad de compra,0.950,-27067.936,-27770.760,-26322.474
+Al azar,0.950,-26423.798,-27132.934,-25580.829
+Mochila (uplift / costo),1.000,-26621.200,-27470.217,-25778.434
+Mayor uplift (sin mirar el costo),1.000,-27947.775,-28748.996,-27097.695
+Mayor probabilidad de compra,1.000,-27946.262,-28747.445,-27094.708
+Al azar,1.000,-27937.608,-28739.083,-27079.648

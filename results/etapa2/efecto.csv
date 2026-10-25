@@ -1,4 +1,4 @@
 metodo,efecto,error_estandar,ic_inf,ic_sup,ancho_ic,p_valor
-"Diferencia de medias, IC normal",0.03756,0.00486,0.02803,0.04709,0.01907,0.00000
-"Diferencia de medias, IC bootstrap",0.03756,0.00489,0.02796,0.04758,0.01963,
-"CUPED con n_transacciones, IC normal",0.03393,0.00454,0.02504,0.04282,0.01778,0.00000
+"Diferencia de medias, IC normal",0.03323,0.00217,0.02898,0.03748,0.00850,0.00000
+"Diferencia de medias, IC bootstrap",0.03323,0.00215,0.02915,0.03722,0.00807,
+"CUPED con n_transacciones, IC normal",0.03197,0.00203,0.02799,0.03594,0.00794,0.00000

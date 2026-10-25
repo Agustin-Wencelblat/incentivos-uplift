@@ -1,6 +1,6 @@
 # Etapa 5 — Política con presupuesto
 
-- Clientes de prueba: 12,066. Uplift de **X-learner** (elegido en la etapa 4); probabilidad sin incentivo del modelo de control del T-learner.
+- Clientes de prueba: 60,457. Uplift de **X-learner** (elegido en la etapa 4); probabilidad sin incentivo del modelo de control del T-learner.
 - Supuestos: margen 25%, descuento 10% del ticket si el tratado compra, costo por contacto 1. Monto de la compra: ticket medio del cliente.
 - Valores en ganancia neta (margen − descuentos − contactos) por cada 1000 clientes, en la moneda de los tickets.
 
@@ -8,18 +8,18 @@
 
 | politica | tratados | dif_vs_referencia | dif_ic_inf | dif_ic_sup | gasto_esperado | gasto_dr |
 |---|---|---|---|---|---|---|
-| Mochila (uplift / costo) | 0.31 | -6714.77 | -7997.11 | -5289.67 | 9273.25 | 9172.32 |
-| Mayor uplift (sin mirar el costo) | 0.27 | -6451.61 | -7687.80 | -5140.70 | 9273.25 | 9274.66 |
-| Mayor probabilidad de compra | 0.25 | -8445.39 | -9094.43 | -7801.87 | 9273.30 | 9248.89 |
-| Al azar | 0.30 | -7249.88 | -8392.30 | -6084.68 | 9273.27 | 9342.40 |
-| A todos (sin presupuesto) | 1.00 | -25322.75 | -27280.19 | -23259.57 | 30911.05 | 30928.79 |
+| Mochila (uplift / costo) | 0.38 | -7422.18 | -8039.40 | -6797.08 | 9313.25 | 9317.89 |
+| Mayor uplift (sin mirar el costo) | 0.36 | -7440.16 | -7998.98 | -6864.43 | 9313.25 | 9332.43 |
+| Mayor probabilidad de compra | 0.24 | -9069.34 | -9343.62 | -8769.58 | 9313.24 | 9268.01 |
+| Al azar | 0.30 | -8453.78 | -8961.58 | -7926.79 | 9313.25 | 9224.30 |
+| A todos (sin presupuesto) | 1.00 | -27947.78 | -28832.02 | -27043.77 | 31044.18 | 30883.55 |
 | A nadie | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
 
 - `dif_vs_referencia`: ganancia neta frente a no tratar a nadie, estimador doblemente robusto, IC 95% bootstrap pareado.
 - `gasto_esperado`: gasto que predice el modelo (con eso se arma la política); `gasto_dr`: gasto estimado con las compras observadas.
-- Precio sombra con este presupuesto: **0.16**: un peso más de presupuesto agrega 0.16 de ganancia incremental (menos de lo que cuesta: conviene achicar el presupuesto).
-- Greedy vs. solución entera exacta (milp, 2,000 clientes): el greedy queda a -0.002% del óptimo.
-- Errores estándar con la mochila: IPW 1143.27, DR 876.08 por 1000 clientes.
+- Precio sombra con este presupuesto: **0.15**: un peso más de presupuesto agrega 0.15 de ganancia incremental (menos de lo que cuesta: conviene achicar el presupuesto).
+- Greedy vs. solución entera exacta (milp, 2,000 clientes): el greedy queda a 0.004% del óptimo.
+- Errores estándar con la mochila: IPW 530.47, DR 402.23 por 1000 clientes.
 
 ![Políticas](politicas.png)
 
@@ -27,9 +27,9 @@
 
 El presupuesto que maximiza la ganancia neta esperada trata mientras el precio sombra sea mayor que 1. Se elige con el modelo, sin mirar las compras de prueba.
 
-- Presupuesto óptimo: 0.3% del costo de tratar a todos (0.7% de los clientes)
-- Ganancia neta que predice el modelo: 16.68 por 1000 clientes
-- Ganancia neta estimada con las compras observadas (DR): 38.19 por 1000 clientes, IC 95% [-21.47, 102.26]
+- Presupuesto óptimo: 0.2% del costo de tratar a todos (0.4% de los clientes)
+- Ganancia neta que predice el modelo: 10.80 por 1000 clientes
+- Ganancia neta estimada con las compras observadas (DR): 15.61 por 1000 clientes, IC 95% [-11.03, 44.77]
 
 Si el modelo promete bastante más de lo que se observa, está exagerando el uplift de los clientes que elige (ver la pendiente de calibración de la etapa 4): la mochila elige justo a los clientes con el uplift más sobreestimado. Antes de usar la política conviene recalibrar el uplift o achicar el presupuesto.
 
@@ -41,15 +41,15 @@ Si el modelo promete bastante más de lo que se observa, está exagerando el upl
 
 | margen | descuento | tratados | presupuesto_optimo | ganancia_esperada | ganancia_dr | ic_inf | ic_sup |
 |---|---|---|---|---|---|---|---|
-| 0.150 | 0.050 | 0.010 | 0.005 | 17.182 | 29.733 | -27.695 | 94.144 |
-| 0.150 | 0.100 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+| 0.150 | 0.050 | 0.006 | 0.002 | 9.744 | 12.096 | -8.166 | 38.579 |
+| 0.150 | 0.100 | 0.000 | 0.000 | 0.020 | 0.392 | 0.000 | 1.075 |
 | 0.150 | 0.200 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| 0.250 | 0.050 | 0.045 | 0.031 | 172.032 | -275.046 | -728.518 | 216.268 |
-| 0.250 | 0.100 | 0.007 | 0.003 | 16.683 | 38.189 | -12.081 | 89.744 |
+| 0.250 | 0.050 | 0.036 | 0.021 | 103.461 | 75.772 | -82.326 | 298.324 |
+| 0.250 | 0.100 | 0.004 | 0.002 | 10.800 | 15.608 | -10.424 | 45.452 |
 | 0.250 | 0.200 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| 0.350 | 0.050 | 0.094 | 0.073 | 547.967 | -392.306 | -1619.485 | 671.143 |
-| 0.350 | 0.100 | 0.019 | 0.010 | 93.575 | 12.768 | -313.661 | 290.208 |
-| 0.350 | 0.200 | 0.001 | 0.001 | 1.562 | 20.602 | -11.913 | 50.031 |
+| 0.350 | 0.050 | 0.091 | 0.059 | 380.974 | 441.223 | -3.256 | 945.805 |
+| 0.350 | 0.100 | 0.014 | 0.006 | 53.094 | 19.383 | -112.802 | 137.341 |
+| 0.350 | 0.200 | 0.001 | 0.000 | 2.289 | 4.784 | -8.774 | 17.828 |
 
 ## Control: composición por género de los tratados
 
@@ -57,6 +57,6 @@ El género no entra al modelo; esto controla que la política no lo discrimine d
 
 | genero | poblacion | tratados_mochila | razon |
 |---|---|---|---|
-| U | 0.468 | 0.483 | 1.031 |
-| F | 0.367 | 0.347 | 0.947 |
-| M | 0.165 | 0.170 | 1.028 |
+| U | 0.464 | 0.488 | 1.052 |
+| F | 0.368 | 0.357 | 0.970 |
+| M | 0.168 | 0.155 | 0.922 |

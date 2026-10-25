@@ -2,33 +2,34 @@
 
 ## ¿Fue al azar?
 
-- Clientes: 39,854 (49.7% tratados)
-- Mayor |SMD|: 0.0207 (n_transacciones); variables con |SMD| > 0.1: 0 de 22
-- Ruido esperado del SMD por azar con este tamaño de muestra: ≈ 0.0100, así que el umbral usado es max(0.1, 3 × ruido) = 0.1000
+- Clientes: 200,039 (50.0% tratados)
+- Mayor |SMD|: 0.0086 (dias_desde_primera); variables con |SMD| > 0.1: 0 de 22
+- Ruido esperado del SMD por azar con este tamaño de muestra: ≈ 0.0045, así que el umbral usado es max(0.1, 3 × ruido) = 0.1000
 - Variables por encima del umbral: 0
-- AUC de un clasificador que intenta predecir el tratamiento: 0.500 (≈ 0.5 si fue al azar)
+- AUC de un clasificador que intenta predecir el tratamiento: 0.499 (≈ 0.5 si fue al azar)
 
 Sin señales de desbalance: compatible con una asignación al azar.
 
 ## ¿Hubo efecto?
 
-- Tasa de compra: 0.6369 en tratados, 0.5994 en control
-- Efecto promedio: 0.0376, IC 95% [0.0280, 0.0471], p = 1.1e-14
-- IC bootstrap: [0.0280, 0.0476]
-- Con CUPED: 0.0339, IC 95% [0.0250, 0.0428]
-  - Correlación entre el resultado y n_transacciones: ρ = 0.361
-  - Reducción de varianza esperada: ρ² = 13.0%; intervalo 6.7% más angosto
+- Tasa de compra: 0.6365 en tratados, 0.6033 en control
+- Efecto promedio: 0.0332, IC 95% [0.0290, 0.0375], p = 5.8e-53
+- IC bootstrap: [0.0291, 0.0372]
+- Con CUPED: 0.0320, IC 95% [0.0280, 0.0359]
+  - Correlación entre el resultado y n_transacciones: ρ = 0.357
+  - Reducción de varianza esperada: ρ² = 12.7%; intervalo 6.6% más angosto
 
-## Efecto por segmento (p-valores corregidos usando Holm)
+## Efecto por segmento (p-valores corregidos por Holm)
 
 | dimension | segmento | clientes | efecto | ic_inf | ic_sup | p_holm |
 |---|---|---|---|---|---|---|
-| Frecuencia | Q1 (menos frecuentes) | 9964 | 0.0406 | 0.0221 | 0.0591 | 0.0001 |
-| Frecuencia | Q2 | 9963 | 0.0382 | 0.0186 | 0.0577 | 0.0005 |
-| Frecuencia | Q3 | 9963 | 0.0348 | 0.0171 | 0.0525 | 0.0005 |
-| Frecuencia | Q4 (más frecuentes) | 9964 | 0.0213 | 0.0085 | 0.0340 | 0.0011 |
-| Usa el programa de puntos | no | 15401 | 0.0308 | 0.0150 | 0.0465 | 0.0005 |
-| Usa el programa de puntos | sí | 24453 | 0.0395 | 0.0279 | 0.0511 | 0.0000 |
-| Compró en los últimos 30 días | sí | 39854 | 0.0376 | 0.0280 | 0.0471 | 0.0000 |
+| Frecuencia | Q1 (menos frecuentes) | 50010 | 0.0434 | 0.0351 | 0.0517 | 0.0000 |
+| Frecuencia | Q2 | 50010 | 0.0444 | 0.0357 | 0.0532 | 0.0000 |
+| Frecuencia | Q3 | 50009 | 0.0258 | 0.0180 | 0.0337 | 0.0000 |
+| Frecuencia | Q4 (más frecuentes) | 50010 | 0.0137 | 0.0079 | 0.0194 | 0.0000 |
+| Usa el programa de puntos | no | 78099 | 0.0309 | 0.0239 | 0.0379 | 0.0000 |
+| Usa el programa de puntos | sí | 121940 | 0.0340 | 0.0288 | 0.0392 | 0.0000 |
+| Recencia | compra menos reciente que la mediana | 100019 | 0.0410 | 0.0348 | 0.0472 | 0.0000 |
+| Recencia | compra más reciente que la mediana | 100020 | 0.0260 | 0.0208 | 0.0313 | 0.0000 |
 
 ![Efecto por segmento](segmentos.png)

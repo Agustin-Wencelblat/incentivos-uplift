@@ -1,8 +1,9 @@
 dimension,segmento,clientes,efecto,ic_inf,ic_sup,p_valor,p_holm
-Frecuencia,Q1 (menos frecuentes),9964,0.04059,0.02210,0.05908,0.00002,0.00008
-Frecuencia,Q2,9963,0.03815,0.01860,0.05770,0.00013,0.00047
-Frecuencia,Q3,9963,0.03480,0.01710,0.05251,0.00012,0.00047
-Frecuencia,Q4 (más frecuentes),9964,0.02128,0.00854,0.03401,0.00106,0.00106
-Usa el programa de puntos,no,15401,0.03076,0.01497,0.04655,0.00013,0.00047
-Usa el programa de puntos,sí,24453,0.03951,0.02789,0.05113,0.00000,0.00000
-Compró en los últimos 30 días,sí,39854,0.03756,0.02803,0.04709,0.00000,0.00000
+Frecuencia,Q1 (menos frecuentes),50010,0.04337,0.03508,0.05166,0.00000,0.00000
+Frecuencia,Q2,50010,0.04445,0.03573,0.05317,0.00000,0.00000
+Frecuencia,Q3,50009,0.02585,0.01795,0.03374,0.00000,0.00000
+Frecuencia,Q4 (más frecuentes),50010,0.01370,0.00795,0.01945,0.00000,0.00000
+Usa el programa de puntos,no,78099,0.03088,0.02387,0.03788,0.00000,0.00000
+Usa el programa de puntos,sí,121940,0.03400,0.02879,0.03921,0.00000,0.00000
+Recencia,compra menos reciente que la mediana,100019,0.04101,0.03483,0.04720,0.00000,0.00000
+Recencia,compra más reciente que la mediana,100020,0.02604,0.02078,0.03129,0.00000,0.00000

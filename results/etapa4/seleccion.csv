@@ -1,16 +1,16 @@
 pliegue,clave,metodo,qini
-1,s,S-learner,0.000953
-1,t,T-learner,-0.003589
-1,x,X-learner,-0.002424
-1,z,Variable transformada,0.002631
-1,dr,DR-learner,0.002784
-2,s,S-learner,-0.001795
-2,t,T-learner,0.000783
-2,x,X-learner,0.003389
-2,z,Variable transformada,0.003552
-2,dr,DR-learner,0.001273
-3,s,S-learner,0.006017
-3,t,T-learner,0.000609
-3,x,X-learner,0.008596
-3,z,Variable transformada,-0.000131
-3,dr,DR-learner,0.004425
+1,s,S-learner,0.007831
+1,t,T-learner,0.005945
+1,x,X-learner,0.008001
+1,z,Variable transformada,0.003093
+1,dr,DR-learner,0.006477
+2,s,S-learner,0.005397
+2,t,T-learner,0.005076
+2,x,X-learner,0.006404
+2,z,Variable transformada,0.005335
+2,dr,DR-learner,0.006398
+3,s,S-learner,0.005145
+3,t,T-learner,0.004449
+3,x,X-learner,0.005521
+3,z,Variable transformada,0.003549
+3,dr,DR-learner,0.006085

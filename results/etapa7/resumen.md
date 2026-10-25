@@ -12,20 +12,22 @@
 
 ## Lo que dicen los datos del experimento
 
-- Ganancia por cliente bajo la mochila: media 62.30, desvío 77.33 (6,075 clientes de prueba compatibles)
-- Bajo *Mayor probabilidad de compra*: media 60.28, desvío 82.55 (6,101 clientes)
-- Diferencia estimada (DR): **1.73** por cliente, IC 95% [0.27, 3.25]
+- Ganancia por cliente bajo la mochila: media 64.37, desvío 80.28 (30,136 clientes de prueba compatibles)
+- Bajo *Mayor probabilidad de compra*: media 62.27, desvío 83.34 (30,263 clientes)
+- Diferencia estimada (DR): **1.65** por cliente, IC 95% [0.97, 2.32]
 - Correlación de la métrica con `gasto_total`: ρ ≈ 0.47, así que CUPED reduce la varianza un 22%
 
 ## Tamaño de muestra (α = 0.05, potencia 80%)
 
-| efecto_supuesto | delta_por_cliente | clientes_por_grupo | con_cuped | fraccion_poblacion_con_cuped |
-|---|---|---|---|---|
-| Estimado (DR, etapa 5) | 1.7306 | 33529 | 26226 | 0.6584 |
-| Extremo inferior del IC 95% | 0.2682 | 1395644 | 1091654 | 27.4061 |
-| Mitad del estimado | 0.8653 | 134114 | 104902 | 2.6336 |
+La última columna es la fracción de los 400,162 clientes cargados en la base que haría falta (los dos grupos juntos). Si cargaste una muestra con `--muestra`, la población real es más grande y la fracción, proporcionalmente menor.
 
-Con el efecto estimado hacen falta 33,529 clientes por grupo sin CUPED. El IC de la diferencia es ancho: planificar con el efecto puntual da un A/B con poca potencia si el efecto real está cerca del extremo inferior. Hay supuestos de efecto para los que no alcanza toda la población (fracción > 1): habría que juntar varias campañas, aceptar menos potencia o un efecto mínimo mayor.
+| efecto_supuesto | delta_por_cliente | clientes_por_grupo | con_cuped | fraccion_clientes_cargados_con_cuped |
+|---|---|---|---|---|
+| Estimado (DR, etapa 5) | 1.6472 | 38738 | 30128 | 0.1506 |
+| Extremo inferior del IC 95% | 0.9706 | 111568 | 86772 | 0.4337 |
+| Mitad del estimado | 0.8236 | 154950 | 120511 | 0.6023 |
+
+Con el efecto estimado hacen falta 38,738 clientes por grupo sin CUPED. El IC de la diferencia es ancho: planificar con el efecto puntual da un A/B con poca potencia si el efecto real está cerca del extremo inferior.
 
 ![Potencia](potencia.png)
 
@@ -45,4 +47,4 @@ Frenar en la primera mirada con p < 0.05 infla la tasa de falsos positivos. Si h
 
 ## Sample ratio mismatch en el experimento de X5
 
-Tratados 19,794, control 20,060: p-valor del test chi-cuadrado contra 50/50 = 0.183 (sin evidencia de desbalance en la asignación).
+Tratados 99,981, control 100,058: p-valor del test chi-cuadrado contra 50/50 = 0.863 (sin evidencia de desbalance en la asignación).
