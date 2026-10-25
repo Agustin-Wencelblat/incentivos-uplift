@@ -1,0 +1,60 @@
+# Base de datos del proyecto y pgAdmin para explorarla.
+#
+#   docker compose up -d        arrancar
+#   docker compose stop         apagar (los datos se conservan)
+#   docker compose down -v      borrar contenedores Y datos
+
+name: incentivos-uplift
+
+services:
+  db:
+    image: postgres:16
+    container_name: incentivos_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USUARIO:-incentivos}
+      POSTGRES_PASSWORD: ${DB_CLAVE:-incentivos}
+      POSTGRES_DB: ${DB_NOMBRE:-incentivos}
+    ports:
+      - "${DB_PUERTO:-5434}:5432"
+    # purchases tiene ~46 millones de filas: más memoria para ordenar y agrupar
+    command:
+      - postgres
+      - -c
+      - shared_buffers=1GB
+      - -c
+      - work_mem=128MB
+      - -c
+      - maintenance_work_mem=512MB
+      - -c
+      - max_wal_size=4GB
+    shm_size: 1gb
+    volumes:
+      - datos_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: incentivos_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_CLAVE:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "${PGADMIN_PUERTO:-5051}:80"
+    volumes:
+      - datos_pgadmin:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  datos_db:
+  datos_pgadmin:

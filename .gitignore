@@ -1,0 +1,16 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Datos y modelos: pesados, se regeneran
+data/*
+!data/.gitkeep
+modelos/*
+!modelos/.gitkeep
+
+# Resultados intermedios (las tablas y figuras finales sí se suben)
+results/monitoreo/
+.env.example

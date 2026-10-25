@@ -1,0 +1,106 @@
+# A quién darle un incentivo, con presupuesto limitado
+
+Darle un incentivo a quien iba a comprar igual es plata perdida. Este proyecto estima **a quién le cambia el comportamiento** un incentivo (uplift modeling), decide **a quién dárselo con un presupuesto fijo** para maximizar la ganancia incremental, **evalúa esa política con los datos del experimento original** y la empaqueta en un **pipeline con monitoreo**, como se operaría en producción.
+
+**Datos:** [X5 RetailHero](https://ods.ai/competitions/x5-retailhero-uplift-modeling/data): ~200 mil clientes con un tratamiento (una comunicación) asignado mitad y mitad, y ~46 millones de líneas de compras previas a la campaña.
+
+**Stack:** Python · PostgreSQL · SQL · pandas · scikit-learn · SciPy · Docker · GitHub Actions
+
+## Estado
+
+| Etapa | Qué hace | Estado |
+|---|---|---|
+| 1. Datos y variables | Carga de X5 en Postgres, tipos, variables por cliente en SQL, controles de calidad | ✅ Implementada |
+| 2. El experimento | Balance entre grupos, efecto promedio, CUPED, efecto por segmento | ✅ Implementada y testeada |
+| 3. Simulación | Qué método de uplift recupera mejor un efecto conocido | ⬜ Por hacer: `src/simulacion.py`, `src/uplift.py` |
+| 4. Uplift en datos reales | Modelos, curva Qini, calibración del uplift | ⬜ Por hacer: `src/uplift.py`, `src/evaluacion.py` |
+| 5. Política con presupuesto | Mochila, precio sombra, evaluación off-policy | ⬜ Por hacer: `src/politica.py`, `src/ope.py` |
+| 6. Producción y monitoreo | Pipeline versionado, validación de datos, drift | ⬜ Por hacer: `src/pipeline.py`, `src/monitoreo.py` |
+| 7. A/B de validación | Diseño y potencia del experimento que validaría la política | ⬜ Por hacer |
+
+## Resultados
+
+*Completar después de correr las etapas 1 y 2 sobre los datos reales* (`results/etapa2/resumen.md`): si la asignación fue al azar, el efecto promedio con y sin CUPED, y la primera evidencia de heterogeneidad por segmento.
+
+## Cómo está armado
+
+```
+CSV de X5 ──src.carga──▶ staging (texto) ──01_tipos.sql──▶ clientes, experimento, compras, transacciones
+                                                                 │
+                                                  02_variables.sql (RFM, tendencias, regularidad, puntos)
+                                                                 ▼
+                                               variables_clientes + vista datos_experimento
+                                                                 │
+                                        src.estudios.experimento (etapa 2) ──▶ results/etapa2/
+```
+
+## Puesta en marcha
+
+Comandos para PowerShell en Windows. En Mac o Linux: `cp` en lugar de `Copy-Item` y `source .venv/bin/activate`.
+
+### 1. Base de datos y entorno
+
+Requiere [Docker Desktop](https://www.docker.com/products/docker-desktop/) y Python 3.10 o superior.
+
+```powershell
+Copy-Item .env.example .env
+docker compose up -d                 # PostgreSQL en localhost:5434, pgAdmin en http://localhost:5051
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Se usan los puertos 5434 y 5051 para no chocar con otros Postgres o pgAdmin que tengas instalados.
+
+### 2. Datos (etapa 1)
+
+```powershell
+python -m src.descargar                       # baja ~650 MB a data/x5 y verifica los hashes
+python -m src.carga data/x5 --muestra 0.2     # 20% de los clientes, para iterar rápido
+python -m src.construir
+```
+
+Cuando todo esté probado, cargá el dataset completo (`python -m src.carga data/x5`, sin `--muestra`) y volvé a correr `python -m src.construir`. Con los datos completos, la carga y el SQL pueden tardar entre 20 y 40 minutos y ocupar unos 10 GB en Docker. La tabla de staging de compras se borra al terminar. Si después cambiás `sql/02_variables.sql`, `python -m src.construir` recalcula solo las variables, sin volver a cargar.
+
+Si el cargador avisa que faltan columnas, la versión del dataset usa otros nombres: ajustá `ESPERADAS` y `RENOMBRES` en `src/carga.py`.
+
+### 3. Controles de calidad en pgAdmin
+
+Abrí <http://localhost:5051> y desplegá *Servers → Incentivos (Docker)* (contraseña: `incentivos`). Después, *Query Tool* sobre la base `incentivos`, y abrí `sql/03_calidad.sql`. Ejecutá cada consulta por separado: seleccionala y apretá F5.
+
+**Prestá atención a la consulta 6b** (fechas posteriores al corte): muestra la fuga de información que corrige `02_variables.sql` (ver *Decisiones de diseño*).
+
+### 4. El experimento (etapa 2)
+
+```powershell
+python -m src.estudios.experimento
+```
+
+Deja en `results/etapa2/` las tablas de balance, efecto y segmentos, dos gráficos y un `resumen.md`. En `sql/04_experimento.sql` hay una versión en SQL de los mismos cálculos, para mirarlos en pgAdmin.
+
+### 5. Tests
+
+```powershell
+pytest
+```
+
+GitHub Actions los corre en cada push.
+
+## Decisiones de diseño
+
+- **Uplift, no probabilidad de compra.** Un modelo de probabilidad de compra no distingue a quien compra *por* el incentivo de quien compra igual. El objetivo es $\tau(x) = \mathbb{E}[Y(1) - Y(0) \mid X = x]$.
+- **Fuga de información en la fecha de primer canje.** `clients.first_redeem_date` puede ser posterior a la comunicación, y un primer canje después de la campaña implica una compra durante la campaña, que es justo lo que se quiere predecir. Las variables solo cuentan el canje si ocurrió antes de la fecha de corte. (En los notebooks de ejemplo de scikit-uplift, esa fecha sin filtrar es la variable más importante del modelo: una señal típica de fuga.)
+- **Corrección en el tiempo.** Todas las variables usan solo información anterior a la última compra registrada, previa a la comunicación.
+- **El monto se agrega por ticket, no por línea.** En X5 hay una fila por producto y el total del ticket se repite en cada una. Sumar por línea multiplicaría el gasto por la cantidad de productos.
+- **Cargar como texto y convertir en SQL.** Ningún valor raro rompe la carga, y la tabla `control_conversiones` registra cuántos valores no se pudieron convertir en cada columna.
+- **Muestra por cliente con un hash.** `--muestra` elige clientes con un hash determinístico del `client_id`: la muestra es la misma en las tres tablas y en todas las corridas.
+- **El umbral de balance depende del tamaño de muestra.** La regla de $|\mathrm{SMD}| < 0.1$ supone muestras grandes. Bajo asignación al azar, el SMD tiene un desvío aproximado de $\sqrt{1/n_T + 1/n_C}$, así que el estudio marca una variable solo si supera $\max(0.1,\ 3 \sqrt{1/n_T + 1/n_C})$. Con ~200 mil clientes manda el 0.1.
+- **CUPED con una covariable previa al tratamiento.** Reduce la varianza en un factor $1 - \rho^2$ sin sesgar el efecto. Con una covariable afectada por el tratamiento, el ajuste sesgaría el resultado (hay un test que lo muestra).
+- **Comparaciones múltiples.** El efecto por segmento reporta p-valores corregidos por Holm.
+- **El género no entra al modelo.** Se conserva en la tabla solo para controlar más adelante que la política no lo discrimine de rebote.
+
+## Limitaciones conocidas
+
+- La documentación de X5 no dice explícitamente que la asignación haya sido al azar; la etapa 2 lo verifica con el balance entre grupos.
+- El experimento de X5 es una sola campaña: el monitoreo de drift (etapa 6) se va a tener que demostrar con una población simulada.
+- X5 no publica márgenes: los supuestos económicos de la etapa 5 van a ser inventados, documentados y con análisis de sensibilidad.
