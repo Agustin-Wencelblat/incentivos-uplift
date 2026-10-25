@@ -87,3 +87,54 @@ def efectos_con_intervalo(tabla: pd.DataFrame, ruta: Path, titulo: str, efecto_g
     ax.set_xlabel("Efecto en la probabilidad de compra (tratados − control), con IC 95%")
     ax.set_title(titulo)
     guardar(fig, ruta)
+
+
+def puntos_por_grupo(tabla: pd.DataFrame, ruta: Path, titulo: str, etiqueta_x: str,
+                     referencia: float | None = None) -> None:
+    """
+    Una fila por grupo (p. ej. escenario) y un punto con intervalo por serie
+    (p. ej. método). tabla: columnas grupo, serie, media, ic_inf, ic_sup; los
+    grupos y las series se muestran en el orden en que aparecen.
+    """
+    grupos = list(dict.fromkeys(tabla["grupo"]))
+    series = list(dict.fromkeys(tabla["serie"]))
+    fig, ax = plt.subplots(figsize=(6.6, 0.55 * len(grupos) + 1.6))
+    ancho = 0.7 / max(len(series), 1)
+    base = np.arange(len(grupos))[::-1]
+    for i, serie in enumerate(series):
+        d = tabla[tabla["serie"] == serie].set_index("grupo").reindex(grupos)
+        y = base + 0.35 - ancho / 2 - i * ancho
+        ax.errorbar(
+            d["media"], y, xerr=[d["media"] - d["ic_inf"], d["ic_sup"] - d["media"]],
+            fmt="o", ms=4, color=COLORES[i % len(COLORES)], elinewidth=1.5, capsize=0, label=serie,
+        )
+    if referencia is not None:
+        ax.axvline(referencia, color=TINTA_2, lw=1, ls="--")
+    ax.set_yticks(base, grupos, color=TINTA)
+    ax.grid(axis="y", visible=False)
+    ax.set_xlabel(etiqueta_x)
+    ax.set_title(titulo)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12 - 0.6 / (len(grupos) + 2)),
+              ncol=min(len(series), 3), fontsize=8)
+    guardar(fig, ruta)
+
+
+def curvas_qini(curvas: dict[str, pd.DataFrame], ruta: Path, titulo: str) -> None:
+    """curvas: nombre -> DataFrame con fraccion e incremental (ver evaluacion.curva_qini)."""
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    total, i = None, 0
+    for nombre, c in curvas.items():
+        if nombre.lower().startswith("oráculo"):
+            estilo = {"color": TINTA_2, "ls": ":"}
+        else:
+            estilo, i = {"color": COLORES[(i + 1) % len(COLORES)]}, i + 1   # COLORES[0] es "sin modelo"
+        ax.plot(c["fraccion"], c["incremental"], label=nombre, lw=1.6, **estilo)
+        total = c["incremental"].iloc[-1]
+    if total is not None:
+        ax.plot([0, 1], [0, total], color=TINTA_2, lw=1, ls="--", label="Azar")
+    ax.axhline(0, color=GRILLA, lw=1)
+    ax.set_xlabel("Fracción de clientes tratados (de mayor a menor uplift predicho)")
+    ax.set_ylabel("Compras incrementales por cliente")
+    ax.set_title(titulo)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=4, fontsize=8)
+    guardar(fig, ruta)
