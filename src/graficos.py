@@ -12,7 +12,6 @@ from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 
-# Paleta categórica en orden fijo (validada para daltonismo) y tintas de texto
 COLORES = ["#2a78d6", "#b3fdbf", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"]
 TINTA, TINTA_2, GRILLA = "#0b0b0b", "#52514e", "#e4e3df"
 
