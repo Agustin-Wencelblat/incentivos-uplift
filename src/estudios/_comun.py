@@ -30,7 +30,7 @@ def argumentos(descripcion: str) -> argparse.ArgumentParser:
 def tabla_markdown(df: pd.DataFrame, decimales: int = 4) -> str:
     def fmt(v):
         if isinstance(v, float):
-            return f"{v:.{decimales}f}"
+            return f"{round(v, decimales) + 0.0:.{decimales}f}"      # + 0.0 evita "-0.00"
         return str(v)
 
     cab = "| " + " | ".join(df.columns) + " |"
