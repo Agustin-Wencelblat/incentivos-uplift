@@ -15,6 +15,7 @@ RAIZ = Path(__file__).resolve().parents[1]
 DIR_DATOS = RAIZ / "data"
 DIR_SQL = RAIZ / "sql"
 DIR_RESULTADOS = RAIZ / "results"
+DIR_MODELOS = RAIZ / "modelos"
 
 SEMILLA = 2026
 

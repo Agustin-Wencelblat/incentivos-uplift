@@ -23,18 +23,13 @@ from . import db
 from .config import DIR_SQL
 
 
-def existe_tabla(nombre: str) -> bool:
-    with db.conectar() as con:
-        return con.execute("SELECT to_regclass(%s) IS NOT NULL", (nombre,)).fetchone()[0]
-
-
 def construir() -> None:
-    if existe_tabla("stg_purchases"):
+    if db.existe_tabla("stg_purchases"):
         t0 = time.time()
         print("Construyendo tablas con tipos (sql/01_tipos.sql)...", flush=True)
         db.ejecutar_script(DIR_SQL / "01_tipos.sql")
         print(f"  listo en {time.time() - t0:.0f}s")
-    elif existe_tabla("transacciones"):
+    elif db.existe_tabla("transacciones"):
         print("Las tablas con tipos ya existen y stg_purchases fue borrada: se recalculan solo las variables.")
     else:
         sys.exit("No hay datos cargados. Corré primero: python -m src.carga <carpeta>")

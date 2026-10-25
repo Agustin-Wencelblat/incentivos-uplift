@@ -44,6 +44,17 @@ def ejecutar_script(ruta: Path) -> None:
         con.execute(ruta.read_text(encoding="utf-8"))
 
 
+def ejecutar(sql: str, parametros: tuple | None = None) -> None:
+    """Una sentencia sin resultado (DELETE, UPDATE, ...). Parámetros con %s."""
+    with conectar() as con:
+        con.execute(sql, parametros)
+
+
+def existe_tabla(nombre: str) -> bool:
+    with conectar() as con:
+        return con.execute("SELECT to_regclass(%s) IS NOT NULL", (nombre,)).fetchone()[0]
+
+
 def contar(tabla: str) -> int:
     with conectar() as con:
         return con.execute(f"SELECT count(*) FROM {tabla}").fetchone()[0]

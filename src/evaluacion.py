@@ -3,11 +3,9 @@ Evaluación del experimento (etapa 2): balance entre grupos, efecto promedio,
 reducción de varianza con CUPED, bootstrap y corrección por comparaciones
 múltiples.
 
-Evaluación de modelos de uplift (etapa 3): curva y coeficiente Qini, PEHE y
-captura de la política.
+Evaluación de modelos de uplift (etapas 3 y 4): curva y coeficiente Qini con
+intervalos bootstrap, calibración por decil, PEHE y captura de la política.
 """
-
-# TODO (etapa 4): calibración del uplift por decil (efecto predicho vs. observado).
 
 from __future__ import annotations
 
@@ -26,7 +24,9 @@ from .config import SEMILLA
 # ═══ Experimento ═════════════════════════════════════════════════════════════
 def diferencia_estandarizada(X: pd.DataFrame, t) -> pd.DataFrame:
     """
-    SMD = (media_T - media_C) / sqrt((s_T^2 + s_C^2) / 2) 
+    SMD = (media_T - media_C) / sqrt((s_T^2 + s_C^2) / 2) por variable.
+    Con asignación al azar se espera |SMD| < 0.1. Ignora NaN y reporta además
+    la diferencia en la proporción de faltantes (que también debe ser chica).
     """
     t = np.asarray(t)
     filas = []
@@ -48,6 +48,14 @@ def diferencia_estandarizada(X: pd.DataFrame, t) -> pd.DataFrame:
 
 
 def auc_balance(X: pd.DataFrame, t, semilla: int = SEMILLA) -> float:
+    """
+    Test global de balance: AUC (con validación cruzada) de un modelo que intenta
+    predecir quién fue tratado a partir de las variables. Si la asignación fue
+    al azar, no hay nada que aprender: AUC cercano a 0.5.
+    """
+    # Gradient boosting maneja faltantes y relaciones no lineales sin preprocesar,
+    # así que si hubiera algún desbalance, aunque sea en una combinación de
+    # variables, lo encontraría.
     modelo = HistGradientBoostingClassifier(max_iter=200, learning_rate=0.05, random_state=semilla)
     cv = StratifiedKFold(5, shuffle=True, random_state=semilla)
     p = cross_val_predict(modelo, X, t, cv=cv, method="predict_proba")[:, 1]
@@ -211,3 +219,52 @@ def captura_politica(tau_real, tau_estimado, fraccion: float = 0.3) -> float:
     elegidos = np.argsort(-np.asarray(tau_estimado, dtype=float), kind="stable")[:k]
     optimo = np.sort(tau_real)[::-1][:k].sum()
     return float(tau_real[elegidos].sum() / optimo) if optimo > 0 else float("nan")
+
+
+def qini_bootstrap(y, t, puntajes: dict[str, np.ndarray], repeticiones: int = 500,
+                   semilla: int = SEMILLA) -> pd.DataFrame:
+    """
+    Coeficiente Qini de varios modelos sobre las MISMAS remuestras del conjunto
+    de prueba (una fila por remuestra, una columna por modelo). Al compartir las
+    remuestras, la diferencia entre dos columnas da un intervalo pareado, mucho
+    más angosto que comparar los intervalos de cada modelo por separado.
+    Las predicciones quedan fijas: el intervalo refleja la incertidumbre de la
+    evaluación, no la del entrenamiento.
+    """
+    y, t = np.asarray(y), np.asarray(t)
+    rng = np.random.default_rng(semilla)
+    filas = []
+    for _ in range(repeticiones):
+        i = rng.integers(0, len(y), len(y))
+        filas.append({k: coeficiente_qini(y[i], t[i], np.asarray(p)[i]) for k, p in puntajes.items()})
+    return pd.DataFrame(filas)
+
+
+def resumir_bootstrap(replicas: pd.Series, estimacion: float, nivel: float = 0.95) -> dict:
+    alfa = (1 - nivel) / 2
+    return {
+        "estimacion": float(estimacion),
+        "ic_inf": float(replicas.quantile(alfa)),
+        "ic_sup": float(replicas.quantile(1 - alfa)),
+        "prob_positivo": float((replicas > 0).mean()),
+    }
+
+
+def calibracion_por_grupo(y, t, tau_hat, grupos: int = 10, nivel: float = 0.95) -> pd.DataFrame:
+    """
+    Se agrupa a los clientes por cuantiles del uplift predicho (grupo 1 = mayor
+    uplift) y en cada grupo se compara el uplift predicho medio con el efecto
+    observado (diferencia de medias tratados - control, con IC normal). Si el
+    modelo está calibrado, los puntos caen sobre la diagonal; si solo ordena
+    bien, el efecto observado crece con el grupo pero no coincide en valor.
+    """
+    y, t, tau_hat = np.asarray(y), np.asarray(t), np.asarray(tau_hat, dtype=float)
+    rango = pd.Series(tau_hat).rank(method="first", ascending=False).to_numpy()
+    grupo = np.ceil(rango / len(tau_hat) * grupos).astype(int)
+    filas = []
+    for g in range(1, grupos + 1):
+        m = grupo == g
+        r = efecto_promedio(y[m], t[m], nivel)
+        filas.append({"grupo": g, "clientes": int(m.sum()), "uplift_predicho": float(tau_hat[m].mean()),
+                      "efecto_observado": r["efecto"], "ic_inf": r["ic_inf"], "ic_sup": r["ic_sup"]})
+    return pd.DataFrame(filas)
