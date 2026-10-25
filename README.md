@@ -8,11 +8,13 @@ Darle un incentivo a quien iba a comprar igual es simplemente perder plata. La i
 
 ## Estado
 
+Dividi el proyecto en distintas etapas para estructurar el desarollo y testearlo parte por parte.
+
 | Etapa | Qué hace | Estado |
 |---|---|---|
 | 1. Datos y variables | Carga de X5 en Postgres, tipos, variables por cliente en SQL, controles de calidad | ✅ Implementada |
 | 2. El experimento | Balance entre grupos, efecto promedio, CUPED, efecto por segmento | ✅ Implementada y testeada |
-| 3. Simulación | Qué método de uplift recupera mejor un efecto conocido | ⬜ Por hacer: `src/simulacion.py`, `src/uplift.py` |
+| 3. Simulación | Qué método de uplift recupera mejor un efecto conocido | ✅ Implementada y testeada |
 | 4. Uplift en datos reales | Modelos, curva Qini, calibración del uplift | ⬜ Por hacer: `src/uplift.py`, `src/evaluacion.py` |
 | 5. Política con presupuesto | Mochila, precio sombra, evaluación off-policy | ⬜ Por hacer: `src/politica.py`, `src/ope.py` |
 | 6. Producción y monitoreo | Pipeline versionado, validación de datos, drift | ⬜ Por hacer: `src/pipeline.py`, `src/monitoreo.py` |
@@ -21,18 +23,6 @@ Darle un incentivo a quien iba a comprar igual es simplemente perder plata. La i
 ## Resultados
 
 *TODO*
-
-## Cómo está armado
-
-```
-CSV de X5 ──src.carga──▶ staging (texto) ──01_tipos.sql──▶ clientes, experimento, compras, transacciones
-                                                                 │
-                                                  02_variables.sql (RFM, tendencias, regularidad, puntos)
-                                                                 ▼
-                                               variables_clientes + vista datos_experimento
-                                                                 │
-                                        src.estudios.experimento (etapa 2) ──▶ results/etapa2/
-```
 
 ## Decisiones de diseño
 
