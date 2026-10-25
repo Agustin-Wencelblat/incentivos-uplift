@@ -1,5 +1,5 @@
 """
-Etapa 2 — El experimento: ¿fue al azar? ¿hubo efecto?
+Etapa 2 — El experimento:
 
     python -m src.estudios.experimento
     python -m src.estudios.experimento --rapido     (menos repeticiones de bootstrap)
@@ -33,8 +33,12 @@ def segmentos(df: pd.DataFrame) -> dict[str, pd.Series]:
         "Usa el programa de puntos": pd.Series(
             np.where(df["frac_trans_con_canje"].fillna(0) > 0, "sí", "no"), index=df.index
         ),
-        "Compró en los últimos 30 días": pd.Series(
-            np.where(df["n_trans_30d"] > 0, "sí", "no"), index=df.index
+        # Mitades por recencia (y no "compró en los últimos 30 días": en X5 casi
+        # todos los clientes del experimento compraron en ese período)
+        "Recencia": pd.Series(
+            np.where(df["dias_desde_ultima"] <= df["dias_desde_ultima"].median(),
+                     "compra más reciente que la mediana", "compra menos reciente que la mediana"),
+            index=df.index,
         ),
     }
 

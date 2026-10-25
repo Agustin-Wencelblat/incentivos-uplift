@@ -107,7 +107,7 @@ def main(argv=None) -> None:
         n_c = potencia.tamano_por_grupo(dlt, sa_c, sb_c, args.alfa, args.potencia)
         filas.append({"efecto_supuesto": etiqueta, "delta_por_cliente": dlt,
                       "clientes_por_grupo": n, "con_cuped": n_c,
-                      "fraccion_poblacion_con_cuped": 2 * n_c / poblacion if np.isfinite(n_c) else np.inf})
+                      "fraccion_clientes_cargados_con_cuped": 2 * n_c / poblacion if np.isfinite(n_c) else np.inf})
     tamanos = pd.DataFrame(filas)
     guardar_tabla(tamanos, destino / "tamanos.csv", 4)
 
@@ -164,9 +164,11 @@ def main(argv=None) -> None:
 
 ## Tamaño de muestra (α = {args.alfa}, potencia {args.potencia:.0%})
 
+La última columna es la fracción de los {poblacion:,} clientes cargados en la base que haría falta (los dos grupos juntos). Si cargaste una muestra con `--muestra`, la población real es más grande y la fracción, proporcionalmente menor.
+
 {tabla_markdown(tamanos, 4)}
 
-Con el efecto estimado hacen falta {n_texto} clientes por grupo sin CUPED. El IC de la diferencia es ancho: planificar con el efecto puntual da un A/B con poca potencia si el efecto real está cerca del extremo inferior.{' Hay supuestos de efecto para los que no alcanza toda la población (fracción > 1): habría que juntar varias campañas, aceptar menos potencia o un efecto mínimo mayor.' if (tamanos['fraccion_poblacion_con_cuped'] > 1).any() else ''}{' Como el IC incluye al 0, la etapa 5 no alcanza para afirmar que la mochila supera a la práctica actual: justamente por eso hace falta el A/B.' if delta_inf <= 0 else ''}
+Con el efecto estimado hacen falta {n_texto} clientes por grupo sin CUPED. El IC de la diferencia es ancho: planificar con el efecto puntual da un A/B con poca potencia si el efecto real está cerca del extremo inferior.{' Hay supuestos de efecto para los que no alcanza toda la población (fracción > 1): habría que juntar varias campañas, aceptar menos potencia o un efecto mínimo mayor.' if (tamanos['fraccion_clientes_cargados_con_cuped'] > 1).any() else ''}{' Como el IC incluye al 0, la etapa 5 no alcanza para afirmar que la mochila supera a la práctica actual: justamente por eso hace falta el A/B.' if delta_inf <= 0 else ''}
 
 ![Potencia](potencia.png)
 
