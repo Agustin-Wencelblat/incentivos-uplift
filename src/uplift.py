@@ -1,14 +1,15 @@
-
 """
 Modelos de uplift: estiman el efecto individual
 
     tau(x) = E[Y(1) - Y(0) | X = x]
 
 Todos comparten la interfaz fit(X, t, y) -> self y efecto(X) -> array.
-Los modelos base son HistGradientBoosting, que maneja faltantes sin imputar (los clientes sin compras tienen NaN en ticket, intervalos, etc.).
+Los modelos base son HistGradientBoosting, que maneja faltantes sin imputar
+(los clientes sin compras tienen NaN en ticket, intervalos, etc.).
 
-Supuesto común: tratamiento asignado al azar con probabilidad p constante, así que p se estima como la proporción 
-de tratados y no hace falta un modelo de propensión. Con datos observacionales habría que modelar P(T = 1 | X).
+Supuesto común: tratamiento asignado al azar con probabilidad p constante, así
+que p se estima como la proporción de tratados y no hace falta un modelo de
+propensión. Con datos observacionales habría que modelar P(T = 1 | X).
 """
 
 from __future__ import annotations
@@ -22,6 +23,12 @@ from sklearn.model_selection import KFold
 
 from .config import SEMILLA
 
+
+# ─── Modelos base ────────────────────────────────────────────────────────────
+# Árboles chicos, hojas grandes y parada temprana con un 15% de validación: los
+# pseudo-resultados del X-, DR-learner y la variable transformada son muy
+# ruidosos y, sin esto, el modelo final ajusta ruido (en la simulación, el PEHE
+# del T-learner con 5 mil clientes baja de ~0.25 a ~0.14).
 _PARAMETROS = dict(
     max_iter=500, learning_rate=0.05, max_leaf_nodes=15, min_samples_leaf=100,
     l2_regularization=1.0, early_stopping=True, validation_fraction=0.15, n_iter_no_change=20,
@@ -46,6 +53,8 @@ def variable_transformada(y, t, p: float) -> np.ndarray:
 
     Con T independiente de (Y(0), Y(1)) dado X y P(T = 1) = p:
         E[Z | X] = p E[Y(1) | X] / p - (1 - p) E[Y(0) | X] / (1 - p) = tau(X).
+    Cualquier regresión de Z sobre X estima el uplift, pero Z tiene mucha
+    varianza (vale ±1/p o 0), así que la estimación es ruidosa.
     """
     y, t = np.asarray(y, dtype=float), np.asarray(t, dtype=float)
     return y * (t / p - (1 - t) / (1 - p))
@@ -69,6 +78,8 @@ class SLearner(ModeloUplift):
     """
     Un solo modelo con el tratamiento como una variable más:
         tau(x) = f(x, 1) - f(x, 0).
+    Simple, pero tiende a achicar el efecto hacia cero: si el tratamiento
+    explica poco, la regularización del modelo lo ignora.
     """
 
     nombre = "S-learner"
@@ -85,7 +96,9 @@ class TLearner(ModeloUplift):
     """
     Un modelo con los tratados y otro con el control:
         tau(x) = mu1(x) - mu0(x).
-    Cada modelo ve la mitad de los datos y sus errores no se cancelan.
+    Cada modelo ve la mitad de los datos y sus errores no se cancelan, así que
+    la diferencia tiene bastante varianza. También expone mu0 y mu1, que la
+    política de la etapa 5 necesita para el costo del incentivo.
     """
 
     nombre = "T-learner"
@@ -106,6 +119,14 @@ class TLearner(ModeloUplift):
 
 
 class XLearner(ModeloUplift):
+    """
+    X-learner (Künzel et al., 2019). Paso 1: un T-learner. Paso 2: efectos
+    imputados, comparando cada cliente con la predicción del otro grupo,
+        tratados: D1 = Y - mu0(X),    control: D0 = mu1(X) - Y,
+    y una regresión de cada uno sobre X. Paso 3: se combinan con la propensión;
+    con asignación al azar es constante: tau(x) = p tau0(x) + (1 - p) tau1(x).
+    """
+
     nombre = "X-learner"
 
     def fit(self, X, t, y):
@@ -124,6 +145,8 @@ class XLearner(ModeloUplift):
 
 
 class VariableTransformada(ModeloUplift):
+    """Regresión de la variable transformada Z sobre X (ver variable_transformada)."""
+
     nombre = "Variable transformada"
 
     def fit(self, X, t, y):
@@ -136,6 +159,18 @@ class VariableTransformada(ModeloUplift):
 
 
 class DRLearner(ModeloUplift):
+    """
+    DR-learner (Kennedy, 2023) con cross-fitting. Para cada pliegue, los modelos
+    mu0 y mu1 se entrenan con los otros pliegues y se calcula el pseudo-resultado
+
+        psi = mu1(X) - mu0(X) + T (Y - mu1(X)) / p - (1 - T)(Y - mu0(X)) / (1 - p),
+
+    que cumple E[psi | X] = tau(X) aunque mu0 o mu1 estén mal estimados, siempre
+    que p sea la correcta (doble robustez; acá p es conocida por diseño). Al
+    final, una regresión de psi sobre X. El cross-fitting evita que los mismos
+    datos sirvan para ajustar mu y para evaluar su residuo, lo que sesgaría psi.
+    """
+
     nombre = "DR-learner"
 
     def __init__(self, semilla: int = SEMILLA, pliegues: int = 5):
@@ -171,6 +206,3 @@ def construir(clave: str, semilla: int = SEMILLA) -> ModeloUplift:
     if clave not in MODELOS:
         raise ValueError(f"Modelo desconocido: {clave}. Opciones: {', '.join(MODELOS)}")
     return MODELOS[clave](semilla)
-
-# TODO (etapa 4): ajustar hiperparámetros con una métrica de uplift (Qini por validación cruzada).
-# TODO (no es necesario, lo hago si me queda tiempo): causal forest con econml (CausalForestDML).
