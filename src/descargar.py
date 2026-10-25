@@ -3,13 +3,7 @@ Descarga los archivos de X5 RetailHero a data/x5/ y verifica su integridad.
 
     python -m src.descargar
 
-Son los mismos archivos que usa scikit-uplift (sklift.datasets.fetch_x5),
-bajados directamente: fetch_x5 además los lee completos en memoria con
-pandas, y purchases (~46 millones de filas) necesita muchos GB de RAM.
-Acá solo se descargan; la carga va directo a Postgres (python -m src.carga).
-
-Fuente original: https://ods.ai/competitions/x5-retailhero-uplift-modeling/data
-Tamaño total: ~650 MB comprimido.
+Son los mismos archivos que usa scikit-uplift (sklift.datasets.fetch_x5), bajados directamente.
 """
 
 from __future__ import annotations
