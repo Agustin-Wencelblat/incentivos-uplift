@@ -1,7 +1,7 @@
 -- =============================================================================
 -- 03_calidad.sql — controles de calidad
 -- Abrir en pgAdmin (Query Tool) y ejecutar cada consulta por separado
--- (seleccionarla y F5). Requiere haber corrido: python -m src.construir
+-- Requiere haber corrido: python -m src.construir
 -- =============================================================================
 
 
