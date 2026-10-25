@@ -10,15 +10,15 @@ Darle un incentivo a quien iba a comprar igual es simplemente perder plata. La i
 
 Dividi el proyecto en distintas etapas para estructurar el desarollo y testearlo parte por parte.
 
-| Etapa | Qué hace | Estado |
+| Etapa | Qué hace | Codigo |
 |---|---|---|
-| 1. Datos y variables | Carga de X5 en Postgres, tipos, variables por cliente en SQL, controles de calidad | ✅ Implementada |
-| 2. El experimento | Balance entre grupos, efecto promedio, CUPED, efecto por segmento | ✅ Implementada y testeada |
-| 3. Simulación | Qué método de uplift recupera mejor un efecto conocido | ✅ Implementada y testeada |
-| 4. Uplift en datos reales | Modelos, curva Qini, calibración del uplift | ⬜ Por hacer: `src/uplift.py`, `src/evaluacion.py` |
-| 5. Política con presupuesto | Mochila, precio sombra, evaluación off-policy | ⬜ Por hacer: `src/politica.py`, `src/ope.py` |
-| 6. Producción y monitoreo | Pipeline versionado, validación de datos, drift | ⬜ Por hacer: `src/pipeline.py`, `src/monitoreo.py` |
-| 7. A/B de validación | Diseño y potencia del experimento que validaría la política | ⬜ Por hacer |
+| 1. Datos y variables | Carga de X5 en Postgres, tipos, variables por cliente en SQL, controles de calidad | sql/, src/carga.py, src/construir.py |
+| 2. El experimento | Balance entre grupos, efecto promedio, CUPED, efecto por segmento | src/estudios/experimento.py |
+| 3. Simulación | Qué método de uplift recupera mejor un efecto conocido | src/simulacion.py, src/uplift.py |
+| 4. Uplift en datos reales | Modelos, curva Qini, calibración del uplift | src/estudios/uplift_real.py |
+| 5. Política con presupuesto | Mochila, precio sombra, evaluación off-policy | src/politica.py, src/ope.py |
+| 6. Producción y monitoreo | Pipeline versionado, validación de datos, drift | src/pipeline.py, src/monitoreo.py |
+| 7. A/B de validación | Diseño y potencia del experimento que validaría la política | src/potencia.py, src/estudios/ab.py |
 
 ## Resultados
 

@@ -13,4 +13,7 @@ modelos/*
 
 # Resultados intermedios (las tablas y figuras finales sí se suben)
 results/monitoreo/
-.env.example
+
+# Predicciones por cliente: se regeneran con las etapas 4 y 5
+results/etapa4/predicciones_prueba.csv
+results/etapa5/politicas_prueba.csv
