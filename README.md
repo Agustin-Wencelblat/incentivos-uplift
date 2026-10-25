@@ -1,6 +1,6 @@
 # A quién darle un incentivo, con presupuesto limitado
 
-Darle un incentivo a quien iba a comprar igual es plata perdida. Este proyecto estima **a quién le cambia el comportamiento** un incentivo (uplift modeling), decide **a quién dárselo con un presupuesto fijo** para maximizar la ganancia incremental, **evalúa esa política con los datos del experimento original** y la empaqueta en un **pipeline con monitoreo**, como se operaría en producción.
+Darle un incentivo a quien iba a comprar igual es simplemente perder plata. La idea de este proyecto es estimar **a quién le cambia el comportamiento** un incentivo (uplift modeling). Asi, decidimos **a quién dárselo con un presupuesto fijo** para maximizar la ganancia incremental, **evaluamos esa política con los datos del experimento original** y la empaquetamos en un **pipeline con monitoreo**, como se operaría en producción.
 
 **Datos:** [X5 RetailHero](https://ods.ai/competitions/x5-retailhero-uplift-modeling/data): ~200 mil clientes con un tratamiento (una comunicación) asignado mitad y mitad, y ~46 millones de líneas de compras previas a la campaña.
 
@@ -20,7 +20,7 @@ Darle un incentivo a quien iba a comprar igual es plata perdida. Este proyecto e
 
 ## Resultados
 
-*Completar después de correr las etapas 1 y 2 sobre los datos reales* (`results/etapa2/resumen.md`): si la asignación fue al azar, el efecto promedio con y sin CUPED, y la primera evidencia de heterogeneidad por segmento.
+*TODO*
 
 ## Cómo está armado
 
@@ -33,58 +33,6 @@ CSV de X5 ──src.carga──▶ staging (texto) ──01_tipos.sql──▶ c
                                                                  │
                                         src.estudios.experimento (etapa 2) ──▶ results/etapa2/
 ```
-
-## Puesta en marcha
-
-Comandos para PowerShell en Windows. En Mac o Linux: `cp` en lugar de `Copy-Item` y `source .venv/bin/activate`.
-
-### 1. Base de datos y entorno
-
-Requiere [Docker Desktop](https://www.docker.com/products/docker-desktop/) y Python 3.10 o superior.
-
-```powershell
-Copy-Item .env.example .env
-docker compose up -d                 # PostgreSQL en localhost:5434, pgAdmin en http://localhost:5051
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
-
-Se usan los puertos 5434 y 5051 para no chocar con otros Postgres o pgAdmin que tengas instalados.
-
-### 2. Datos (etapa 1)
-
-```powershell
-python -m src.descargar                       # baja ~650 MB a data/x5 y verifica los hashes
-python -m src.carga data/x5 --muestra 0.2     # 20% de los clientes, para iterar rápido
-python -m src.construir
-```
-
-Cuando todo esté probado, cargá el dataset completo (`python -m src.carga data/x5`, sin `--muestra`) y volvé a correr `python -m src.construir`. Con los datos completos, la carga y el SQL pueden tardar entre 20 y 40 minutos y ocupar unos 10 GB en Docker. La tabla de staging de compras se borra al terminar. Si después cambiás `sql/02_variables.sql`, `python -m src.construir` recalcula solo las variables, sin volver a cargar.
-
-Si el cargador avisa que faltan columnas, la versión del dataset usa otros nombres: ajustá `ESPERADAS` y `RENOMBRES` en `src/carga.py`.
-
-### 3. Controles de calidad en pgAdmin
-
-Abrí <http://localhost:5051> y desplegá *Servers → Incentivos (Docker)* (contraseña: `incentivos`). Después, *Query Tool* sobre la base `incentivos`, y abrí `sql/03_calidad.sql`. Ejecutá cada consulta por separado: seleccionala y apretá F5.
-
-**Prestá atención a la consulta 6b** (fechas posteriores al corte): muestra la fuga de información que corrige `02_variables.sql` (ver *Decisiones de diseño*).
-
-### 4. El experimento (etapa 2)
-
-```powershell
-python -m src.estudios.experimento
-```
-
-Deja en `results/etapa2/` las tablas de balance, efecto y segmentos, dos gráficos y un `resumen.md`. En `sql/04_experimento.sql` hay una versión en SQL de los mismos cálculos, para mirarlos en pgAdmin.
-
-### 5. Tests
-
-```powershell
-pytest
-```
-
-GitHub Actions los corre en cada push.
 
 ## Decisiones de diseño
 
