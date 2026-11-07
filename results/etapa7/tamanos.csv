@@ -1,4 +1,4 @@
 efecto_supuesto,delta_por_cliente,clientes_por_grupo,con_cuped,fraccion_clientes_cargados_con_cuped
-"Estimado (DR, etapa 5)",1.6472,38738,30128,0.1506
-Extremo inferior del IC 95%,0.9706,111568,86772,0.4337
-Mitad del estimado,0.8236,154950,120511,0.6023
+"Estimado (DR, etapa 5)",1.4244,62723,46332,0.2316
+Extremo inferior del IC 95%,0.5366,442003,326494,1.6318
+Mitad del estimado,0.7122,250892,185326,0.9263
