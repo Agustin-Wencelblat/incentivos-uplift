@@ -160,8 +160,11 @@ def main(argv=None) -> None:
     # ── 3. Sensibilidad a los supuestos ─────────────────────────────────────
     print("Sensibilidad...")
     filas = []
+    # Descuento 0 = el incentivo es solo la comunicación (lo que fue el tratamiento real de X5)
     for m in (0.15, 0.25, 0.35):
-        for desc in (0.05, 0.10, 0.20):
+        for desc in (0.0, 0.05, 0.10, 0.20):
+            if desc == 0 and sup.costo_contacto <= 0:
+                continue                      # costo nulo: no hay problema de presupuesto
             s = Supuestos(m, desc, sup.costo_contacto)
             v_s, c_s = politica.valor_y_costo(d["mu0"], d["mu1"], monto, s)
             r_s = ope.recompensa(y, t, monto, s)
